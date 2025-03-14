@@ -22,6 +22,8 @@ const options = {
 }
 app.use(cors(options));
 
+require('./utils/auth');
+
 app.get('/', (req, res) => {
   res.send('Hola mi server en express');
 });
@@ -39,5 +41,5 @@ app.use(errorHandler);
 
 
 app.listen(port, () => {
-  console.log('Mi port ' +  port);
+  console.log(`Mi port ${port}`);
 });

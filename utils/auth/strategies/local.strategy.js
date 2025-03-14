@@ -1,18 +1,31 @@
 const { Strategy } = require('passport-local');
+const boom = require('@hapi/boom');
+const bcrypt = require('bcrypt');
+
 const UserService = require('./../../../services/user.service');
 const service = new UserService();
-const boom = require('boom');
 
-const LocalStrategy = new Strategy(async (email, password, done) => {
-  try {
-    const user = await service.findByEmail(email);
-    if (!user) {
-      done(boom.unauthorized(),false);
+const LocalStrategy = new Strategy(
+  {
+    usernameField: 'email',// con esto le digo que el campo ya no va a ser username sino email cuando quiera enviar los datos
+    passwordField: 'password',
+  },
+  async (email, password, done) => {
+    try {
+      const user = await service.findByEmail(email);
+      if (!user) {
+        done(boom.unauthorized(), false);
+      }
+      const isMatch = await bcrypt.compare(password, user.password);
+      if (!isMatch) {
+        done(boom.unauthorized(), false);
+      }
+      delete user.dataValues.password;
+      done(null, user);
+    } catch (error) {
+      done(error, false);
     }
-    user.password;
-  } catch (err) {
-    done(err,false);
   }
-});
+);
 
 module.exports = LocalStrategy;
