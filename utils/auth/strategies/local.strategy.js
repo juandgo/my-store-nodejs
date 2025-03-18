@@ -5,10 +5,9 @@ const bcrypt = require('bcrypt');
 const UserService = require('./../../../services/user.service');
 const service = new UserService();
 
-const LocalStrategy = new Strategy(
-  {
-    usernameField: 'email',// con esto le digo que el campo ya no va a ser username sino email cuando quiera enviar los datos
-    passwordField: 'password',
+const LocalStrategy = new Strategy({
+    usernameField: 'email',
+    passwordField: 'password'
   },
   async (email, password, done) => {
     try {

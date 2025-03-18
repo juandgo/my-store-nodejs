@@ -33,7 +33,7 @@ services:
       - ./mysql_data:/var/lib/mysql
 
   phpmyadmin:
-    image: phpmyadmin/phpmyadmin
+    image: .phpmyadmin/phpmyadmin
     environment:
       - MYSQL_ROOT_PASSWORD=admin123
       - PMA_HOST=mysql
